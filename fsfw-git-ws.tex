@@ -66,7 +66,7 @@
 \setbeamertemplate{footline}[frame number]
 
 \title{Versionsverwaltung mit git: Warum und wie.}
-\subtitle{Erstsemester-Einführung Informatik, tbd.2020}
+\subtitle{Erstsemester-Einführung Informatik, 22.10.2020}
 
 \begin{document}
 
@@ -186,7 +186,7 @@
            }]
 
          ]
-         \node[location, draw=green!50!black!50, bottom color=green!50!black!20] (repository) {SVN Repo};
+         \node[location, draw=green!50!black!50, bottom color=green!50!black!20] (repository) {Zentrales Repo};
          \node[location] (user1) [below left of=repository] {Arbeitskopie 1};
          \node[location] (user2) [below of=repository, yshift=-1ex] {Arbeitskopie 2};
          \node[location] (user3) [below right of=repository] {Arbeitskopie 3};
@@ -260,35 +260,6 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}[label=why40]
-\frametitle{Warum Git? (3)}
-
-\begin{textblock*}{\textwidth}[0.5,0.](60mm,20mm)
-\begin{center}%
-\only<1>{
-\begin{figure}
-  \includegraphics[width=80mm]{img-src/svn-vs-git-boxing}
-\end{figure}
-}
-\only<2->{
-\begin{figure}
-  \includegraphics[width=80mm]{img-src/svn-vs-git-stats}\\
-%   \caption{Git and SVN \$WHATISPLOTTEDHERE} %% "Abbildung:" Unnötig
-{Gefühlter Grad der Verbreitung: Git vs SVN}
-\end{figure}
-}
-\bigskip
-\visible<3->
-{
-Seit 2016: Git $\hat{=}$ defacto Standard
-}
-\end{center}
-\end{textblock*}
-
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Git Einführung (mit Praxis)}
 \begin{frame}[label=ef1]
 \frametitle{Einführung in git – Was ist ein Repo?}
@@ -308,8 +279,7 @@ Seit 2016: Git $\hat{=}$ defacto Standard
   ~
   \column{0.75\textwidth}
   \begin{itemize}
-  \item gerichteter, azyklischer Graph von Versionen
-    (\emph{revisions}) einer Ordnerstruktur und deren Inhalt mit
+  \item Graph von Versionen einer Ordnerstruktur und deren Inhalt mit
     Metadaten (\emph{Commit-ID}, Autor, Beschreibungstext)
   \item Commit-ID abgeleitet aus dem Inhalt und dem Graphen
     (kryptographische Hash-Funktion)\\
@@ -391,6 +361,7 @@ Nach-Nachfolger
 \begin{frame}[label=gitintro20]
 \frametitle{Praxis 1: Erste Schritte}
 \begin{itemize}
+    \item Installation: \texttt{apt install git} oder \url{https://git-scm.com/download/win}
  \item Konfiguration anpassen
  \begin{itemize}
   \item \texttt{git config -{}-global user.email "foo@bar.de"}
@@ -404,11 +375,10 @@ Nach-Nachfolger
   \item \texttt{cd foo}
   \item \texttt{git init}
  \end{itemize}
- \item Alternativ: Bestehenedes Repo klonen
+ \item Oder bestehendes Repo klonen
  \begin{itemize}
   \item \texttt{git clone <url>}
  \end{itemize}
- \item[]
  \pause
  \item Hintergrund: Wo speichert git\\ die relevanten Informationen?
  \item[$\rightarrow$] Verstecktes Verzeichnis \texttt{.git}
@@ -977,7 +947,7 @@ Wozu zweiphasiger Commit-Prozess?
 \begin{frame}[fragile,label=uebung10]
 \frametitle{Praxis}
 \begin{itemize}
- \item Bereitgestelltes nicht-trivials Repo:\\
+ \item Bereitgestelltes nicht-triviales Repo:\\
 %  {\scriptsize \url{https://pubgit.sotecware.net/fsfw-git-workshop/lyrik}}
  {\scriptsize \url{https://github.com/fsfw-dresden/git-ws-lyrik.git}}
  \item Basis für verschiedene Aufgaben (Anregungen zum spielen)
@@ -995,11 +965,6 @@ Wozu zweiphasiger Commit-Prozess?
  \item committen
  \item analog im Branch \textit{london} \verb|sonnets/text1.md| 'XXX' durch 'thee' ersetzen
  \end{enumerate}
- \item commit-History einzelner Dateien anzeigen
- \begin{enumerate}[a)]
-  \item \verb|git blame AUTHORS.md|
-  \item \verb|git blame sonnets/text1.md|
- \end{enumerate}
 \setcounter{taskcounter}{\value{enumi}}
 \end{enumerate}
 
@@ -1014,17 +979,17 @@ Wozu zweiphasiger Commit-Prozess?
 \frametitle{Praxis (2)}
 \begin{enumerate}
  \setcounter{enumi}{\value{taskcounter}}
+ \item commit-History einzelner Dateien anzeigen
+ \begin{enumerate}[a)]
+  \item \verb|git blame AUTHORS.md|
+  \item \verb|git blame sonnets/text1.md|
+ \end{enumerate}
 
  \item Änderungen anzeigen
  \begin{enumerate}[a)]
   \item ... seit dem vorletzten Commit: \verb|git diff HEAD~|
   \item[$\rightarrow$] beliebige Änderungen vornehmen
   \item ... seit dem letzten Commit: \verb|git diff|
-  \item[]
-  \item Grafische diff-Anzeige: \verb|diff| durch \verb|difftool| ersetzen
-  \item[] vorher:\\
-  \verb|git config --global diff.tool meld| {(\tiny im PC-Pool schon \checkmark)}
-  \item[] oder passendes Tool konfigurieren: \verb|git config --global diff.tool kdiff3|
   \end{enumerate}
   \item Branch \textit{london} in \textit{master} mergen
   \begin{enumerate}[a)]
@@ -1050,29 +1015,27 @@ Wozu zweiphasiger Commit-Prozess?
 \begin{enumerate}
  \setcounter{enumi}{\value{taskcounter}}
 
-  \item Irrelevante Dateien ignorieren
+  \item Irrelevante oder geheime Dateien ignorieren
   \begin{enumerate}[a)]
-   \item sicherstellen, dass \verb|git status| "`working directory clean"' liefert
-   \item Skript ausführen: \verb|python3 scripts/find-shortest-poem.py|
-   \item \verb|git status| $\rightarrow$ Hilfsdateien bemerken (\verb|__pycache__|)
+   \item \verb|git status| $\rightarrow$ Hilfsdateien oder geheime Dateien
+       bemerken (\verb|out.log| oder \verb|id_rsa|)
    \item[] {\scriptsize Häufig gibt es lokale Dateien, deren Änderungen nicht
            von git verfolgt werden sollen
    $\rightarrow$ Datei \verb|.gitignore| hilft}
-   \item ignore-Datei ergänzen: \verb|echo "__pycache__" >> .gitignore|
+   \item ignore-Datei ergänzen: \verb|echo "out.log" >> .gitignore|
    \item Staus-Änderung zur Kenntnis nehmen: \verb|git status|
-   \item Committen: \verb|git commit -am "ignore python-bytecode-dir"|
+   \item Committen: \verb|git commit -am "ignore log file"|
 %    \begin{itemize}
 %     \item \verb|git add .gitignore|
 %     \item
 %    \end{itemize}
-\smallskip
    \item Zur Kenntnis nehmen: \verb|git status| $\rightarrow$ "`working directory clean"'
   \end{enumerate}
   \item[] Hinweis: Inhalt der Datei \verb|.gitignore| (nachprüfen):
   {\scriptsize
   \begin{verbatim}
    # This file specifies which files should not be tracked by git
-   __pycache__
+   out.log
   \end{verbatim}
   }
   \vspace{-3mm}
@@ -1080,7 +1043,7 @@ Wozu zweiphasiger Commit-Prozess?
   \item Bedeutung der Zeilen
   \begin{enumerate}
    \item Erklärender Kommentar (stand vorher schon drin)
-   \item Ignoriere alle Dateien in Unterverzeichnissen namens \verb|__pycache__|
+   \item Ignoriere Dateien mit dem Namen \texttt{out.log}
   \end{enumerate}
 
   \end{itemize}
