@@ -12,3 +12,5 @@
 *.out
 *.tex.backup
 tmp/*
+*.fdb_latexmk
+*.fls
